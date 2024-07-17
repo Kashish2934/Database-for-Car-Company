@@ -1,0 +1,110 @@
+
+--Catalogue Table :
+CREATE TABLE Catalogue ( Model_ID varchar (10),
+Model_Name varchar (10), 
+Generation integer,
+Category varchar (10),
+Price integer, 
+Warranty integer,
+Stock_Available integer, 
+Fuel_type Char (5),
+On_sale boolean,
+Transmission_type char (5), 
+PRIMARY KEY (Model_ID)
+);
+
+--Location Table: 
+CREATE TABLE Location ( 
+Postal_Pin integer,
+Taluka varchar (20),
+District varchar (20),
+State varchar (20)
+PRIMARY KEY (Postal_Pin)
+);
+
+--Dealership Table :
+CREATE TABLE Dealership ( Dealership_ID varchar (10),
+Dealership_Name varchar(20),
+Dealer_Name varchar (20),
+Postal_Pin integer,
+Email varchar (20),
+PRIMARY KEY (Dealership_ID),
+FOREIGN KEY (Postal_Pin) references from Location (Postal_Pin) 
+ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+--Waiting Table :
+CREATE TABLE Waiting ( Waiting_ID varchar (10), 
+CustId varchar(20), 
+Contact_No integer,
+Model_ID varchar (10), 
+Booking_Date Date,
+PRIMARY KEY (Waiting_ID),
+FOREIGN KEY (Model_ID) references from Catalogue (Model_ID),
+ON UPDATE CASCADE ON DELETE CASCADE
+FOREIGN KEY (CustId) references from Catalogue (CustId),
+ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+CREATE TABLE Invoice (
+Invoice_id varchar(20),
+Engine_No varchar(20),
+Chassis_No varchar(20),
+Model_ID varchar (10), 
+CustID integer,
+EmpID integer, 
+Sales_Price integer,
+Sales_Date Date,
+PRIMARY KEY (Invoice_id),
+FOREIGN KEY (EmpID) references from Employee (EmpID) 
+ON UPDATE CASCADE ON DELETE SET NULL,
+FOREIGN KEY (CustID) references from Customer (CustID) 
+ON UPDATE CASCADE,
+FOREIGN KEY (Model_ID) references from Catalogue (Model_ID) 
+ON UPDATE CASCADE 
+);
+
+
+
+--Customer Table :
+CREATE TABLE Customer ( 
+CustID integer,
+CName varchar (20),
+Contact_No integer,
+PRIMARY KEY (CustID)
+);
+
+
+--Employee Table : 
+CREATE TABLE Employee ( EmpID integer,
+Department varchar (10), 
+ContactNo integer,
+Salary integer,
+Dealership_ID varchar (10) 
+PRIMARY KEY (EmpID),
+FOREIGN KEY (Dealership_ID) references from Dealership (Dealership_ID) 
+ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+
+--Colour Table :
+CREATE TABLE Colour (
+Colour varchar (10),
+Model_ID varchar (10),
+PRIMARY KEY (Model ID, Colour),
+FOREIGN KEY (Model_ID) references from Catalogue (Model_ID)
+ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+--Contact Table :
+CREATE TABLE Contact (
+Dealership_ID varchar (10), 
+ContactNo integer,
+PRIMARY KEY (Dealership_ID, ContactNo),
+FOREIGN KEY (Dealership_ID) references from Dealership (Dealership_ID)
+ON UPDATE CASCADE ON DELETE CASCADE
+);
